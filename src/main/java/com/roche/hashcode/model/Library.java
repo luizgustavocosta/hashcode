@@ -1,16 +1,17 @@
 package com.roche.hashcode.model;
 
 import java.util.HashSet;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
 public class Library {
 
-    private HashSet<Book> books;
+    private List<Book> books;
     private int daysToTakeSign;
     private int limitToShipBooksByDay;
 
-    public Library(HashSet<Book> books, int daysToTakeSign, int limitToShipBooksByDay) {
+    public Library(List<Book> books, int daysToTakeSign, int limitToShipBooksByDay) {
         this.books = books;
         this.daysToTakeSign = daysToTakeSign;
         this.limitToShipBooksByDay = limitToShipBooksByDay;
@@ -24,7 +25,7 @@ public class Library {
         }
     }
 
-    public HashSet<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 

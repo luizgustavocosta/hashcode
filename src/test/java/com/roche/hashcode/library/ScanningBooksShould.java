@@ -8,11 +8,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ScanningBooksShould {
 
@@ -39,7 +37,9 @@ public class ScanningBooksShould {
             for (String score : dataOfLibrary) {
                 booksOfFirstLibrary.add(new Book(Integer.parseInt(score)));
             }
-            final Library library = new Library(booksOfFirstLibrary,
+            final List<Book> sorted = booksOfFirstLibrary.stream()
+                    .sorted(Comparator.comparingInt(Book::getScore)).collect(Collectors.toList());
+            final Library library = new Library(sorted,
                     Integer.parseInt(dataOfLibrary[1]),
                     Integer.parseInt(dataOfLibrary[2]));
 
@@ -50,17 +50,22 @@ public class ScanningBooksShould {
 
     @Test
     public void orderTheScanningToScenarioC() throws IOException {
-        final BookScanning bookScanning = readInput("src/test/resources/g_example.txt");
+        final BookScanning bookScanning = readInput("src/test/resources/a_example.txt");
         final List<Library> libraries = bookScanning.getLibraries()
                 .stream()
-                .sorted(byScore.thenComparing(byDays).reversed())
+                .sorted(bySignDuration)
+                .sorted(byScore.thenComparing(bySignDuration).reversed())
                 .sorted(byLimit)
                 .collect(Collectors.toList());
 
+        System.out.println("Time available->"+bookScanning.getTimeAvailable());
+        libraries.forEach(library -> {
+            System.out.println(library);
+        });
         System.out.println(libraries);
     }
 
     Comparator<Library> byScore = Comparator.comparing(Library::totalScore);
-    Comparator<Library> byDays = Comparator.comparing(Library::getDaysToTakeSign);
+    Comparator<Library> bySignDuration = Comparator.comparing(Library::getDaysToTakeSign);
     Comparator<Library> byLimit = Comparator.comparing(Library::getLimitToShipBooksByDay);
 }
