@@ -20,7 +20,7 @@ public class ScanningBooksShould {
 
     @Test
     public void convertInputToModel() throws IOException {
-        final List<String> lines = Files.readAllLines(Paths.get("src/test/resources/g_example.txt"));
+        final List<String> lines = Files.readAllLines(Paths.get("src/test/resources/c_incunabula.txt"));
         final String[] order = lines.get(0).split(" ");
         //Fixed
         BookScanning bookScanning = new BookScanning();
@@ -43,5 +43,6 @@ public class ScanningBooksShould {
 
             bookScanning.addLibrary(library);
         }
+        System.out.println(bookScanning);
     }
 }
