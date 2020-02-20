@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Book {
 
-    private final int identifier;
     private final int score;
+    private final int identifier;
 
     public int getScore() {
         return score;

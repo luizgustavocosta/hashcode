@@ -17,29 +17,39 @@ public class OptimisationAlgorithmShould {
     @Test
     public void returnOutputFileForExampleOne() {
 //        Integer books = 6;
-        Book bookOne = new Book(1, 1);
-        Book bookTwo = new Book(2, 2);
-        Book bookThree = new Book(3, 3);
-        Book bookFour = new Book(4, 6);
-        Book bookFive = new Book(5, 5);
-        Book bookSix = new Book(6, 4);
+        Book bookZero = new Book(1, 0);
+        Book bookOne = new Book(2, 1);
+        Book bookTwo = new Book(3, 2);
+        Book bookThree = new Book(6, 3);
+        Book bookFour = new Book(5, 4);
+        Book bookFive = new Book(4, 5);
 
-        Library libraryOne = new Library(new HashSet<Book>(Arrays.asList(bookOne, bookTwo, bookThree, bookFour)), 2, 2);
+        Library libraryOne = new Library(new HashSet<Book>(Arrays.asList(bookZero, bookOne, bookTwo, bookThree)), 2, 2);
         List<Library> libraries = new ArrayList<>();
         Integer days = 7;
 
 
         ResponseOutput responseOutput = ResponseOutput.builder()
                 .library(ResponseOutput.LibraryOutput.builder()
+                        .books(Arrays.asList(bookZero, bookOne, bookTwo, bookThree, bookFour))
                         .identifier(0)
+                        .build())
+                .library(ResponseOutput.LibraryOutput.builder()
+                        .identifier(1)
+                        .books(Arrays.asList(bookFive))
                         .build())
                 .build();
 
         assertThat(responseOutput.libraryAmount()).isEqualTo(2);
         assertThat(responseOutput.getLibraries().get(0).getBooks().size()).isEqualTo(5);
-        assertThat(responseOutput.getLibraries().get(0).getScannedBooks()).contains(0, 1, 2, 3, 4);
+        assertThat(responseOutput.getLibraries().get(0).getScannedBooks()).contains(
+                bookZero.getIdentifier(),
+                bookOne.getIdentifier(),
+                bookTwo.getIdentifier(),
+                bookThree.getIdentifier(),
+                bookFour.getIdentifier());
 
         assertThat(responseOutput.getLibraries().get(1).getBooks().size()).isEqualTo(1);
-        assertThat(responseOutput.getLibraries().get(1).getScannedBooks()).contains(5);
+        assertThat(responseOutput.getLibraries().get(1).getScannedBooks()).contains(bookFive.getIdentifier());
     }
 }

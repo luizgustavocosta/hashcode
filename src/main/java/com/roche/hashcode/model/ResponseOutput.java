@@ -14,20 +14,21 @@ public class ResponseOutput {
     @Singular
     private final List<LibraryOutput> libraries;
 
-    public Integer libraryAmount(){
+    public Integer libraryAmount() {
         return libraries.size();
     }
 
     @Data
     @RequiredArgsConstructor
     @Builder
-    public class LibraryOutput{
+    public static class LibraryOutput {
         private final int identifier;
         @Singular
         private final List<Book> books;
 
-        public int[] getScannedBooks(){
-            return books.stream().mapToInt(book->book.getIdentifier())
+        public int[] getScannedBooks() {
+            return books.stream()
+                    .mapToInt(Book::getIdentifier)
                     .toArray();
         }
 

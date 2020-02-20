@@ -37,7 +37,7 @@ public class ScanningBooksShould {
             final String[] dataOfLibrary = lines.get(index).split(" ");
             HashSet<Book> booksOfFirstLibrary = new HashSet<>();
             for (String score : dataOfLibrary) {
-                booksOfFirstLibrary.add(new Book(Integer.parseInt(score)));
+//                booksOfFirstLibrary.add(new Book(Integer.parseInt(score)));
             }
             final Library library = new Library(booksOfFirstLibrary,
                     Integer.parseInt(dataOfLibrary[1]),
