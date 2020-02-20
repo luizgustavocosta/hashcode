@@ -20,7 +20,7 @@ public class ScanningBooksShould {
 
     @Test
     public void convertInputToModel() throws IOException {
-        final List<String> lines = Files.readAllLines(Paths.get("src/test/resources/a_example.txt"));
+        final List<String> lines = Files.readAllLines(Paths.get("src/test/resources/g_example.txt"));
         final String[] order = lines.get(0).split(" ");
         //Fixed
         BookScanning bookScanning = new BookScanning();
@@ -29,15 +29,12 @@ public class ScanningBooksShould {
         int books = Integer.parseInt(order[0]);
         int libraries = Integer.parseInt(order[1]);
 
-        List<Integer> scores = LibraryUtil.listOf(lines.get(1));
+        List<Integer> scoreOfTheBooks = LibraryUtil.listOf(lines.get(1));
 
-        int jumpLines = 2;
-
-        for (int index = jumpLines; index < lines.size(); index=index*jumpLines) {
+        for (int index = 3; index < lines.size(); index=index+2) {
             final String[] dataOfLibrary = lines.get(index).split(" ");
-
             HashSet<Book> booksOfFirstLibrary = new HashSet<>();
-            for (String score : lines.get(index + 1).split(" ")) {
+            for (String score : dataOfLibrary) {
                 booksOfFirstLibrary.add(new Book(Integer.parseInt(score)));
             }
             final Library library = new Library(booksOfFirstLibrary,
@@ -46,6 +43,5 @@ public class ScanningBooksShould {
 
             bookScanning.addLibrary(library);
         }
-        System.out.println(bookScanning);
     }
 }
