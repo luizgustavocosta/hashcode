@@ -1,12 +1,14 @@
 package com.roche.hashcode.model;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@RequiredArgsConstructor
 public class Book {
 
-    private int score;
-
-    public Book(int score) {
-        this.score = score;
-    }
+    private final int identifier;
+    private final int score;
 
     public int getScore() {
         return score;
