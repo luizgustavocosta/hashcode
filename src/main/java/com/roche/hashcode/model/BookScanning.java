@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookScanning {
-
+    private int numberOfBooks;
     private int timeAvailable;
     private List<Library> libraries = new ArrayList<>();
 
@@ -31,8 +31,17 @@ public class BookScanning {
     @Override
     public String toString() {
         return "BookScanning{" +
-                "timeAvailable=" + timeAvailable +
+                "numberOfBooks=" + numberOfBooks +
+                ", timeAvailable=" + timeAvailable +
                 ", libraries=" + libraries +
                 '}';
+    }
+
+    public void setNumberOfBooks(int numberOfBooks) {
+        this.numberOfBooks = numberOfBooks;
+    }
+
+    public int getNumberOfBooks() {
+        return numberOfBooks;
     }
 }

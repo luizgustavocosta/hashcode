@@ -17,12 +17,20 @@ public class Library {
         this.limitToShipBooksByDay = limitToShipBooksByDay;
     }
 
+    public Library() {
+
+    }
+
     public int totalScore() {
         if (isNull(books)) {
             return 0;
         } else {
             return books.stream().mapToInt(Book::getScore).sum();
         }
+    }
+
+    public void addBooks(List<Book> books) {
+        this.books = books;
     }
 
     public List<Book> getBooks() {
