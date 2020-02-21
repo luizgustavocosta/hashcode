@@ -7,7 +7,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -40,18 +43,21 @@ public class ScanningBooksShould {
             }
             final List<Book> sorted = booksOfFirstLibrary.stream()
                     .sorted(Comparator.comparingInt(Book::getScore)).collect(Collectors.toList());
-            final Library library = new Library(sorted,
-                    Integer.parseInt(dataOfLibrary[1]),
-                    Integer.parseInt(dataOfLibrary[2]));
-
-            bookScanning.addLibrary(library);
+            if (dataOfLibrary.length > 2) {
+                final Library library = new Library(sorted,
+                        Integer.parseInt(dataOfLibrary[1]),
+                        Integer.parseInt(dataOfLibrary[2]));
+                bookScanning.addLibrary(library);
+            }
         }
         return bookScanning;
     }
 
     @Test
-    public void orderTheScanningToScenarioC() throws IOException {
-        final BookScanning bookScanning = readInput("src/test/resources/c_incunabula.txt");
+    public void generateOutputToScenario() throws IOException {
+        String directory = "src/test/resources/";
+        String fileName = "a_example.txt";
+        final BookScanning bookScanning = readInput(directory+fileName);
         final List<Library> libraries = bookScanning.getLibraries()
                 .stream()
                 .sorted(bySignDuration)
@@ -60,13 +66,13 @@ public class ScanningBooksShould {
                 .collect(Collectors.toList());
 
         int numberOfBooks = bookScanning.getNumberOfBooks();
-        int accumalate = 0;
+        int accumulate = 0;
         List<Library> output = new ArrayList<>();
         Set<Integer> stored = new HashSet<>();
         for (Library library : libraries) {
-            if (accumalate < numberOfBooks && (library.getBooks().size() + accumalate < numberOfBooks)) {
+            if (accumulate < numberOfBooks && (library.getBooks().size() + accumulate < numberOfBooks)) {
                 output.add(library);
-                accumalate += library.getBooks().size();
+                accumulate += library.getBooks().size();
                 stored.addAll(library.getBooks().stream().map(Book::getScore).collect(Collectors.toSet()));
             } else {
                 output.add(library);
@@ -79,22 +85,18 @@ public class ScanningBooksShould {
                             }
                             return true;
                         }).collect(Collectors.toList());
-                if (numberOfBooks-accumalate <= collect.size()) {
-                    library.addBooks(collect.subList(0, numberOfBooks-accumalate));
+                if (numberOfBooks-accumulate <= collect.size()) {
+                    library.addBooks(collect.subList(0, numberOfBooks-accumulate));
                 }
             }
         }
-
-        System.out.println(output.size());
-
+        StringBuffer buffer = new StringBuffer();
         for (int index = 0; index < output.size(); index++) {
-            System.out.println(index+" "+output.get(index).getBooks().size());
-            output.get(index).getBooks().forEach(book -> System.out.print(book.getScore()+" "));
-            System.out.println("");
+            buffer.append(index+" "+output.get(index).getBooks().size()).append("\n");
+            output.get(index).getBooks().forEach(book -> buffer.append(book.getScore()+" "));
+            buffer.append("\n");
         }
-        /*System.out.println("");
-        System.out.println("1"+" "+output.get(1).getBooks().size());
-        output.get(1).getBooks().forEach(book -> System.out.print(book.getScore()+" "));*/
+        Files.write(Paths.get("src/test/output/" + fileName), buffer.toString().getBytes());
     }
 
     Comparator<Library> byScore = Comparator.comparing(Library::totalScore);
